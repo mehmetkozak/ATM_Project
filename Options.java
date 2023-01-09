@@ -7,149 +7,133 @@ import java.util.Scanner;
 
 public class Options extends Account {
 
-    Scanner input=new Scanner(System.in);
 
-    DecimalFormat moneyFormat =new DecimalFormat("'$'###,##0.00");
-
-    boolean flag=true;
-
-    HashMap<Integer,Integer> data=new HashMap<>();
-
+    Scanner input = new Scanner(System.in);
+    DecimalFormat moneyFormat = new DecimalFormat("'$'###,##0.00");
+    boolean flag = true;
+    HashMap<Integer, Integer> data = new HashMap<>();
     public void login(){
-        System.out.println("Kozak Bank ATM2ye Hoşgeldiniz");
+        System.out.println("Techproed ATM'e hos geldiniz!");
+        int counter = 0;
         do {
-            data.put(12345,1234);
-            data.put(23456,2345);
-            data.put(34567,3456);
-            data.put(45678,4567);
-
-            try {
-                System.out.println("Hesap numaranızı giriniz");
+            data.put(12345, 1234);
+            data.put(23456, 2345);
+            data.put(34567, 3456);
+            data.put(45678, 4567);
+            try{
+                System.out.println("Hesap numaranizi giriniz:");
                 setAccountNumber(input.nextInt());
-                System.out.println("Pin numaranızı giriniz");
+                System.out.println("Pin numaranizi giriniz:");
                 setPinNumber(input.nextInt());
             }catch (Exception e){
-                System.out.println("Yanlış karakter girdiniz. Lütfen sadece rakam giriniz veya Q ile çıkabilirsiniz");
+                System.out.println("Yanlis karakter girdiniz! Lutfen sadece rakam giriniz veya Q ya basip cikabilirsiniz");
                 input.nextLine();
-                String exit=input.next();
-                if (exit.equalsIgnoreCase("Q")){
-                    flag=false;
+                String exit = input.next();
+                if(exit.equalsIgnoreCase("q")){
+                    flag = false;
                 }
             }
-
-            int count=0;
-            for (Map.Entry<Integer,Integer> w:data.entrySet()){
-                if (w.getKey().equals(getAccountNumber()) && w.getValue().equals(getPinNumber())){
-                    getAccountTypes();
-                }else {
+            int count = 0;
+            for(Map.Entry<Integer, Integer> w:data.entrySet() ){
+                if(w.getKey().equals(getAccountNumber()) && w.getValue().equals(getPinNumber()) ){
+                    getAccountTypes();//hesap islemlerine gidiniz
+                }else{
                     count++;
                 }
             }
-            if (count==data.size()){
-                System.out.println("Yanlış hesap veya pin numarası girdiniz");
+            if(count == data.size()){
+                counter++;
+                System.out.println("Yanlis hesap numarsi veya pin numarsi girdiniz");
+                System.out.println("Herhangi bir rakama tiklayip isleme devam ediniz veya Q ya tiklayip cikiniz");
+                String exit = input.next();
+                if(exit.equalsIgnoreCase("q")){
+                    flag = false;
+                }
             }
-
-
+            if(counter ==3){
+                System.out.println("3 kere hatali bilgi girilmistir ve hesabiniz dondurulmustur!!");
+                flag = false;
+            }
         }while (flag);
-
-
-
     }
-
-
-
-    //Checking Hesap İşlemleri-Vadeli hesap işlemleri
+    //Checking hesap islemleri => vadesiz hesap islemleri
     public void checkingOperations(){
-
         do {
-           displayMessage();
-
-            int option=input.nextInt();
-
-            if (option==4){
+            displayMessage();
+            int option = input.nextInt();
+            if(option == 4){
                 break;
             }
             switch (option){
                 case 1:
-                    System.out.println("Checking hesabınızda kalan bakiye"+moneyFormat.format(getCheckingBalance()));
+                    System.out.println("Checking hesabinizda kalan bakiye: "+moneyFormat.format(getCheckingBalance()));
                     break;
                 case 2:
-                    getCheckingWitdraw();
+                    getCheckingWithdraw();//hesabinizdan para cekme islemi yapiniz
                     break;
                 case 3:
-                    getCheckingDeposit();
+                    getCheckingDeposit();//hesabiniza para yatiriniz
                     break;
                 default:
-                    System.out.println("Yanlış seçenek! Lütfen 1,2,3 veya 4'ü seçiniz");
+                    System.out.println("Yanlis secenek! Lutfen 1,2,3 veya 4 u kullaniniz");
             }
-
-        }while(true);
-        getAccountTypes();//İşlemler bitince Ana menüye geri dönemesini sağlıyoruz
-
+        }while (true);
+        getAccountTypes();
     }
-
-    //Vadeli hesap işlemleri
+    //vadeli hesap islemleri
     public void savingOperations(){
-
         do {
-           displayMessage();
-            int option=input.nextInt();
-
-            if (option==4){
+            displayMessage();
+            int option = input.nextInt();
+            if(option == 4){
                 break;
             }
             switch (option){
                 case 1:
-                    System.out.println("Saving hesabınızda kalan bakiye"+moneyFormat.format(getSavingBalance()));
+                    System.out.println("Saving hesabinizda kalan bakiye: "+moneyFormat.format(getSavingBalance()));
                     break;
                 case 2:
-                    getSavingWitdraw();
+                    getSavingWithdraw();
                     break;
                 case 3:
                     getSavingDeposit();
                     break;
                 default:
-                    System.out.println("Yanlış seçenek! Lütfen 1,2,3 veya 4'ü seçiniz");
+                    System.out.println("Yanlis secenek! Lutfen 1,2,3 veya 4 u kullaniniz");
             }
         }while (true);
-        getAccountTypes();//İşlemler bitince Ana menüye geri dönemesini sağlıyoruz
+        getAccountTypes();
     }
-
-    //Ilgili hesabı seçiyorsunuz
+    //Ilgili hesabi seciniz!
     public void getAccountTypes(){
-        System.out.println("İşlem yapmak istediğiniz hesabı seçiniz");
-        System.out.println("1:Checking hesap");
-        System.out.println("2:Saving hesap");
-        System.out.println("3:Quit");
-
-        int option=input.nextInt();
-
+        System.out.println("Işlem yapmak istediginiz hesabi seciniz");
+        System.out.println("1: Checking account"); //vadesiz hesap
+        System.out.println("2: Saving account"); //vadeli hesap
+        System.out.println("3: Quit");
+        int option = input.nextInt();
         switch (option){
             case 1:
-                System.out.println("Checking/Vadesiz Hesabınızdasınız");
+                System.out.println("Checking/vadesiz hesabinizdasiniz");
                 checkingOperations();
                 break;
             case 2:
-                System.out.println("Saving/Vadeli Hesabınızdasınız");
+                System.out.println("Saving/vadeli hesabinizdasiniz");
                 savingOperations();
                 break;
             case 3:
-                System.out.println("ATM makinemizi kullandığınız için teşekkür ederiz");
-                flag=false;
+                System.out.println("ATM makinemizi kullandiginiz icin tesekkur ederiz!");
+                flag = false;
                 break;
             default:
-                System.out.println("Yanlış seçenek! Lütfen 1,2 veya 3'ü  seçiniz");
+                System.out.println("Yanlis secenek! Lutfen 1,2 veya 3'u kullaniniz");
         }
     }
-
-    //kişi için seçenekleri görüntüle
+    //kisi icin secenekleri goruntule
     public void displayMessage(){
-
-        System.out.println("Option seçiniz:");
-        System.out.println("1: View Balance");//Bakiyeyi göster
-        System.out.println("2: Withdraw");//Para Çekme İşlemleri
-        System.out.println("3: Deposit");//Para Yatırma İşlemleri
-        System.out.println("4: Exit");//İşlemi Sonlandır
-
+        System.out.println("Option seciniz!");
+        System.out.println("1: View Balance");// / bekiyenizi kontrol ediniz
+        System.out.println("2: Withdraw");// para cekme
+        System.out.println("3: Deposit"); //para yatirma
+        System.out.println("4: Exit");//islemi sonlandir
     }
 }
